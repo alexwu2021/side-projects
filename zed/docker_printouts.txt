@@ -1,0 +1,110 @@
+Microsoft Windows [Version 10.0.18363.1379]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+D:\git\samples\Sample\zed>docker-compose down
+Stopping zed_todos.api_1 ... done                                                                                                                                         Stopping zed_mysql_1     ... done                                                                                                                                         Removing zed_todos.api_1 ... done                                                                                                                                         Removing zed_mysql_1     ... done                                                                                                                                         Removing network zed_default
+
+D:\git\samples\Sample\zed>docker-compose up --build
+Creating network "zed_default" with the default driver
+Building todos.api
+Step 1/18 : FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+ ---> d329c7e66ea8
+Step 2/18 : WORKDIR /app
+ ---> Using cache
+ ---> 2b938e24615c
+Step 3/18 : EXPOSE 80
+ ---> Using cache
+ ---> 77af54b0cb41
+Step 4/18 : EXPOSE 443
+ ---> Using cache
+ ---> 8500001e3bb7
+
+Step 5/18 : FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+ ---> ec3ca8a1472c
+Step 6/18 : WORKDIR /src
+ ---> Using cache
+ ---> f09d7b852855
+Step 7/18 : COPY ["TodosMicroService/Todos.Api.csproj", "TodosMicroService/"]
+ ---> Using cache
+ ---> 44fe3335a475
+Step 8/18 : COPY ["DataAccess/DataAccess.csproj", "DataAccess/"]
+ ---> Using cache
+ ---> 4826d7f5bde9
+Step 9/18 : RUN dotnet restore "TodosMicroService/Todos.Api.csproj"
+ ---> Using cache
+ ---> 77411450efe5
+Step 10/18 : COPY . .
+ ---> cf0f06fec61e
+Step 11/18 : WORKDIR "/src/TodosMicroService"
+ ---> Running in 0e0cdb770afd
+Removing intermediate container 0e0cdb770afd
+ ---> 3dfd46ab0313
+Step 12/18 : RUN dotnet build "Todos.Api.csproj" -c Release -o /app/build
+ ---> Running in 9960cf2cfd31
+Microsoft (R) Build Engine version 16.7.2+b60ddb6f4 for .NET
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  DataAccess -> /app/build/DataAccess.dll
+  Todos.Api -> /app/build/Todos.Api.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.18
+Removing intermediate container 9960cf2cfd31
+ ---> 6f3ac35519e7
+
+Step 13/18 : FROM build AS publish
+ ---> 6f3ac35519e7
+Step 14/18 : RUN dotnet publish "Todos.Api.csproj" -c Release -o /app/publish
+ ---> Running in 90fd36758e71
+Microsoft (R) Build Engine version 16.7.2+b60ddb6f4 for .NET
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  DataAccess -> /src/DataAccess/bin/Release/netcoreapp3.1/DataAccess.dll
+  Todos.Api -> /src/TodosMicroService/bin/Release/netcoreapp3.1/Todos.Api.dll
+  Todos.Api -> /app/publish/
+Removing intermediate container 90fd36758e71
+ ---> e8430a3d557a
+
+Step 15/18 : FROM base AS final
+ ---> 8500001e3bb7
+Step 16/18 : WORKDIR /app
+ ---> Using cache
+ ---> 856a22f33452
+Step 17/18 : COPY --from=publish /app/publish .
+ ---> 9a85b494064a
+Step 18/18 : ENTRYPOINT ["dotnet", "Todos.Api.dll"]
+ ---> Running in 09c241745f8e
+Removing intermediate container 09c241745f8e
+ ---> 9de39f20d254
+
+Successfully built 9de39f20d254
+Successfully tagged todosapi:latest
+Creating zed_mysql_1 ... done                                                                                                                                             Creating zed_todos.api_1 ... done                                                                                                                                         Attaching to zed_mysql_1, zed_todos.api_1
+mysql_1      | 2021-03-01 19:17:44+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.23-1debian10 started.
+mysql_1      | 2021-03-01 19:17:44+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+mysql_1      | 2021-03-01 19:17:44+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.23-1debian10 started.
+mysql_1      | 2021-03-01T19:17:45.618036Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.23) starting as process 1
+mysql_1      | 2021-03-01T19:17:45.630691Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+mysql_1      | 2021-03-01T19:17:46.007832Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+mysql_1      | 2021-03-01T19:17:46.244075Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+mysql_1      | 2021-03-01T19:17:46.343396Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+mysql_1      | 2021-03-01T19:17:46.343766Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+mysql_1      | 2021-03-01T19:17:46.357285Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+mysql_1      | 2021-03-01T19:17:46.395115Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.23'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+todos.api_1  | info: Microsoft.Hosting.Lifetime[0]
+todos.api_1  |       Now listening on: https://[::]:443
+todos.api_1  | info: Microsoft.Hosting.Lifetime[0]
+todos.api_1  |       Now listening on: http://[::]:80
+todos.api_1  | info: Microsoft.Hosting.Lifetime[0]
+todos.api_1  |       Application started. Press Ctrl+C to shut down.
+todos.api_1  | info: Microsoft.Hosting.Lifetime[0]
+todos.api_1  |       Hosting environment: Development
+todos.api_1  | info: Microsoft.Hosting.Lifetime[0]
+todos.api_1  |       Content root path: /app

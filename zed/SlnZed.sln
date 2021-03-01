@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTestHarness", "TestH
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A7834C2E-28E5-49EB-BC1A-11DFB626EB39}"
 	ProjectSection(SolutionItems) = preProject
+		docker_printouts.txt = docker_printouts.txt
+		..\README.md = ..\README.md
 		docs\zed_db_diagram.png = docs\zed_db_diagram.png
 	EndProjectSection
 EndProject
