@@ -17,11 +17,22 @@ namespace Todos.Api.Services
         private readonly zedContext _zedContext;
         private readonly IConfiguration _configuration;
         private static readonly string DEFAULT_CONNECTION = "DefaultConnection";
+        private static readonly string CONNECTION_INSIDE_DOCKER = "ConnectionInsideDocker";
         public TodosRepository(IConfiguration configuration)
         {
             this._configuration = configuration;
-            string conString = ConfigurationExtensions.GetConnectionString(this._configuration, DEFAULT_CONNECTION);
-            System.Console.WriteLine(conString);
+
+            string conString;
+            if (InDocker)
+            {
+                conString = ConfigurationExtensions.GetConnectionString(this._configuration, CONNECTION_INSIDE_DOCKER);
+            }
+            else
+            {
+                conString = ConfigurationExtensions.GetConnectionString(this._configuration, DEFAULT_CONNECTION);
+            }
+
+            System.Console.WriteLine(string.Format("connectiong string used is {0}", conString));
             _zedContext = new zedContext(conString);
         }
 
@@ -181,6 +192,7 @@ namespace Todos.Api.Services
             }
             return ProcessingResult.Nooperation;
         }
+        private bool InDocker { get { return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"; } }
 
     }
 }

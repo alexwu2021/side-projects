@@ -3,15 +3,15 @@ version: '3'
 services:
   mysql:
     image: mysql:latest
-    hostname: localhost
+    hostname: localhost_docker
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: Passw0rd
       MYSQL_DATABASE: zed
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     ports:
-      - "3307:3306"
+      - "33308:33308"
     volumes:
             - /db_scripts/docker-entrypoint-initdb.sql
             - db_data:/var/lib/mysql

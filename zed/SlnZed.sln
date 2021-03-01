@@ -17,6 +17,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTestHarness", "TestHarness\ServiceTestHarness.csproj", "{0F34C52D-3225-4DB0-8073-6F8AA23747FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A7834C2E-28E5-49EB-BC1A-11DFB626EB39}"
+	ProjectSection(SolutionItems) = preProject
+		docs\zed_db_diagram.png = docs\zed_db_diagram.png
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ADBF3D44-A25F-40B6-BB1C-0C7C1A9BCD47}"
 EndProject
