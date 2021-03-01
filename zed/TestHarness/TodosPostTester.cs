@@ -40,28 +40,29 @@ namespace ServiceTestHarness
                 string result;
                 switch (entry.Key)
                 {
-                    //case CRUDOperationEnum.Create:
-                    //    await TestAddAsync(url);
-                    //    break;
+                    case CRUDOperationEnum.Create:
+                        await TestAddAsync(url);
+                        break;
                     case CRUDOperationEnum.Delete:
                         int idToDelete = 1 + this._random.Next(3);
-                        idToDelete = 3;
                         url = url.Replace("?", idToDelete.ToString());
                         await TestDeleteAsync(url);
                         break;
-                    //case CRUDOperationEnum.ReadAll:
-                    //    result = await TestGetAll(url);
-                    //    Debug.WriteLine(string.Format("read all result {0}", result));
-                    //    break;
-                    //case CRUDOperationEnum.ReadOne:
-                    //    int idToGet = 1 + this._random.Next(3);
-                    //    url = url.Replace("?", idToGet.ToString());
-                    //    result = await TestGetOne(url);
-                    //    Debug.WriteLine(string.Format("read one result {0}", result));
-                    //    break;
-                    //case CRUDOperationEnum.Update:
-                    //    await TestUpdateAsync(url);
-                    //    break;
+                    case CRUDOperationEnum.ReadAll:
+                        result = await TestGetAll(url);
+                        Debug.WriteLine(string.Format("read all result {0}", result));
+                        break;
+                    case CRUDOperationEnum.ReadOne:
+                        int idToGet = 1 + this._random.Next(3);
+                        url = url.Replace("?", idToGet.ToString());
+                        result = await TestGetOne(url);
+                        Debug.WriteLine(string.Format("read one result {0}", result));
+                        break;
+                    case CRUDOperationEnum.Update:
+                        await TestUpdateAsync(url);
+                        break;
+                    default: 
+                        break;
                 }
             }
             return;

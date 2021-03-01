@@ -128,9 +128,13 @@ namespace Todos.Api.Services
             }
             try
             {
-                theOne = GetTaskFromTodo(todo);
-                _zedContext.SaveChanges();
-                return ProcessingResult.Success;
+                var newOne = GetTaskFromTodo(todo);
+                theOne.Transcribe(newOne);
+                _zedContext.Update(theOne);
+                var result = _zedContext.SaveChanges();
+                if(result > 0)
+                    return ProcessingResult.Success;
+                return ProcessingResult.Failure;
             }
             catch (Exception ex)
             {
@@ -163,8 +167,10 @@ namespace Todos.Api.Services
                     
                     // then delete the current task from Tasks
                     _zedContext.Tasks.Remove(theOne);
-                    _zedContext.SaveChanges();
-                    return ProcessingResult.Success;
+                    var result = _zedContext.SaveChanges();
+                    if(result > 0)
+                        return ProcessingResult.Success;
+                    return ProcessingResult.Failure;
                 }
                 catch (Exception ex)
                 {

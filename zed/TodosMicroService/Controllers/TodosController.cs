@@ -23,7 +23,7 @@ namespace Todos.Api.Controllers
             _todosRepository = new TodosRepository(configuration);
         }
 
-        // GET todos/getdefault
+        // GET api/todos/getdefault
         [HttpGet()]
         [HttpGet("getdefault")]
         public ActionResult<IEnumerable<Models.Todo>> Getdefault()
@@ -31,14 +31,14 @@ namespace Todos.Api.Controllers
             return GetAll();
         }
 
-        // GET todos/getall
+        // GET api/todos/getall
         [HttpGet("getall")]
         public ActionResult<IEnumerable<Models.Todo>> GetAll()
         {
             return _todosRepository.GetAll().ToArray();
         }
 
-        // GET todos/get/3
+        // GET api/todos/get/1
         [HttpGet("get/{id}")]
         public ActionResult<Models.Todo> Get(int id)
         {
@@ -46,7 +46,7 @@ namespace Todos.Api.Controllers
         }
 
 
-        // POST todos/update
+        // POST api/todos/update
         //[ValidateAntiForgeryToken]
         [HttpPost("update")]
         public ActionResult<ProcessingResult> Update([FromBody] Models.Todo todo)
@@ -54,14 +54,14 @@ namespace Todos.Api.Controllers
             return _todosRepository.Update(todo);
         }
 
-        // POST todos/add
+        // POST api/todos/add
         [HttpPost("add")]
         public ActionResult<ProcessingResult> Add([FromBody] Models.Todo todo)
         {
             return _todosRepository.Add(todo);
         }
 
-        // GET todos/remove/4
+        // GET api/todos/remove/4
         [HttpGet("del/{id}")]
         public ActionResult<ProcessingResult> Delete(int id)
         {
