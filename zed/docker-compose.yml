@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    hostname: localhost
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zed
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+            - /db_scripts/docker-entrypoint-initdb.sql
+            - db_data:/var/lib/mysql
+  todos.api:
+    image: ${DOCKER_REGISTRY-}todosapi
+    build:
+      context: .
+      dockerfile: TodosMicroService/Dockerfile
+    depends_on:
+      - mysql
+volumes:
+    db_data:
